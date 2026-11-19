@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- SEO & Metadata Dasar -->
+  <title>Nama Lengkap | Web Developer & UI/UX Enthusiast</title>
+  <meta name="description" content="Portofolio Nama Lengkap, mahasiswa Sistem Informasi Universitas Nusantara PGRI Kediri & anggota komunitas SIKOKI yang berfokus pada Web Development dan UI/UX Design.">
+  <meta name="author" content="Nama Lengkap">
+  <meta name="theme-color" content="#020617">
+
+  <!-- Google Fonts: Plus Jakarta Sans (Headings) & Inter (Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN Resmi -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              950: '#020617',
+              900: '#0f172a',
+              800: '#1e293b',
+              700: '#334155',
+              600: '#475569',
+              400: '#94a3b8',
+              300: '#cbd5e1',
+              100: '#f1f5f9',
+            },
+            emerald: {
+              400: '#34d399',
+              500: '#10b981',
+            },
+            cyan: {
+              400: '#22d3ee',
+              500: '#06b6d4',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            heading: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Script Interaksi (defer) -->
+  <script src="script.js" defer></script>
+</head>
+
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-emerald-400/20 selection:text-emerald-400">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-50 w-full bg-slate-950/85 backdrop-blur-md border-b border-slate-800 transition-colors duration-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Logo / Nama Pemilik Website -->
+        <a href="#hero" class="group flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 rounded-lg p-1" aria-label="Beranda Portofolio">
+          <div class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400 group-hover:border-emerald-400/50 transition-colors">
+            <i data-lucide="terminal" class="w-5 h-5"></i>
+          </div>
+          <span class="font-heading font-bold text-lg sm:text-xl tracking-tight text-slate-100">
+            [Nama Lengkap]<span class="text-emerald-400">.</span>
+          </span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2" aria-label="Navigasi Utama Desktop">
+          <a href="#tentang" class="px-3.5 py-2 text-sm font-medium text-slate-400 hover:text-emerald-400 hover:bg-slate-900/60 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400">Tentang</a>
+          <a href="#keahlian" class="px-3.5 py-2 text-sm font-medium text-slate-400 hover:text-emerald-400 hover:bg-slate-900/60 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400">Keahlian</a>
+          <a href="#proyek" class="px-3.5 py-2 text-sm font-medium text-slate-400 hover:text-emerald-400 hover:bg-slate-900/60 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400">Proyek</a>
+          <a href="#kontak" class="px-3.5 py-2 text-sm font-medium text-slate-400 hover:text-emerald-400 hover:bg-slate-900/60 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400">Kontak</a>
+          
+          <a href="#proyek" class="ml-3 inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-sm hover:shadow-emerald-400/20 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950">
+            <span>Eksplorasi</span>
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </nav>
+
+        <!-- Hamburger Button (Mobile) -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-button" type="button" aria-label="Buka menu navigasi" aria-expanded="false" aria-controls="mobile-menu" class="p-2 rounded-lg text-slate-400 hover:text-slate-100 hover:bg-slate-900 border border-transparent hover:border-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition-colors">
+            <i id="hamburger-icon" data-lucide="menu" class="w-6 h-6"></i>
+            <i id="close-icon" data-lucide="x" class="w-6 h-6 hidden"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-800 bg-slate-950/95 backdrop-blur-lg px-4 pt-3 pb-5 space-y-1" aria-label="Navigasi Utama Seluler">
+      <a href="#tentang" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:text-emerald-400 hover:bg-slate-900 transition-colors">Tentang</a>
+      <a href="#keahlian" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:text-emerald-400 hover:bg-slate-900 transition-colors">Keahlian</a>
+      <a href="#proyek" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:text-emerald-400 hover:bg-slate-900 transition-colors">Proyek</a>
+      <a href="#kontak" class="mobile-nav-link block px-3 py-2.5 rounded-lg text-base font-medium text-slate-300 hover:text-emerald-400 hover:bg-slate-900 transition-colors">Kontak</a>
+      <div class="pt-2">
+        <a href="#proyek" class="mobile-nav-link flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm font-semibold text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg transition-colors">
+          <span>Lihat Proyek</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-grow">
+    
+    <!-- ================= HERO SECTION ================= -->
+    <section id="hero" class="relative pt-12 pb-20 md:pt-20 md:pb-28 lg:pt-28 lg:pb-36 overflow-hidden scroll-mt-24">
+      <!-- Glow ambient background decoration -->
+      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none -z-10" aria-hidden="true"></div>
+      <div class="absolute top-1/3 right-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -z-10" aria-hidden="true"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-12 lg:gap-16">
+          
+          <!-- Hero Text Content -->
+          <div class="w-full md:w-3/5 text-center md:text-left">
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs sm:text-sm font-medium text-slate-300 mb-6">
+              <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Mahasiswa Sistem Informasi &bull; SIKOKI</span>
+            </div>
+
+            <p class="text-emerald-400 font-medium text-base sm:text-lg mb-2">Halo semua, saya</p>
+            <h1 class="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl text-slate-100 tracking-tight leading-tight mb-3">
+              [Nama Lengkap]
+            </h1>
+            <h2 class="font-heading font-semibold text-xl sm:text-2xl lg:text-3xl text-cyan-400 mb-5">
+              Web Developer &amp; UI/UX Enthusiast
+            </h2>
+
+            <!-- Deskripsi singkat maks 2 kalimat sesuai PRD -->
+            <p class="text-slate-400 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto md:mx-0 mb-8">
+              Mahasiswa Sistem Informasi yang tertarik membangun pengalaman web yang fungsional dan mudah digunakan. Saya terus mengembangkan kemampuan frontend serta eksplorasi UI/UX melalui pembelajaran dan proyek.
+            </p>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
+              <a href="#proyek" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-heading font-semibold text-slate-950 bg-emerald-400 hover:bg-emerald-300 shadow-lg shadow-emerald-400/15 hover:shadow-emerald-400/25 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-950">
+                <span>Lihat Proyek</span>
+                <i data-lucide="arrow-down" class="w-4 h-4"></i>
+              </a>
+
+              <a href="#tentang" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-heading font-semibold text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-950">
+                <span>Tentang Saya</span>
+                <i data-lucide="user" class="w-4 h-4 text-emerald-400"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Profil Frame (Lingkaran dengan aksen) -->
+          <div class="w-full md:w-2/5 flex justify-center">
+            <div class="relative group">
+              <!-- Outer glowing ring -->
+              <div class="absolute -inset-1 rounded-full bg-gradient-to-tr from-emerald-400 to-cyan-400 opacity-60 blur-md group-hover:opacity-90 transition duration-500" aria-hidden="true"></div>
+              
+              <!-- Frame lingkaran -->
+              <div class="relative w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72 rounded-full p-1.5 bg-slate-950 border-2 border-emerald-400/60 overflow-hidden shadow-2xl flex items-center justify-center">
+                <!-- Foto profil / Placeholder visual SVG yang elegan -->
+                <div class="w-full h-full rounded-full bg-gradient-to-b from-slate-900 to-slate-950 flex flex-col items-center justify-center text-slate-400 select-none overflow-hidden">
+                  <!-- Apabila foto profil assets/images/profile.jpg ada, akan ditampakkan, jika tidak fallback ke placeholder avatar -->
+                  <img src="assets/images/profile.jpg" alt="Foto Profil [Nama Lengkap]" class="w-full h-full object-cover rounded-full" onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+                  
+                  <!-- Fallback Avatar Visual Placeholder -->
+                  <div class="hidden flex-col items-center justify-center w-full h-full p-4 text-center">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-emerald-400 mb-2">
+                      <i data-lucide="user" class="w-8 h-8 sm:w-10 sm:h-10"></i>
+                    </div>
+                    <span class="text-xs text-slate-400 font-medium">Foto Profil</span>
+                    <span class="text-[10px] text-slate-500 mt-0.5">assets/images/profile.jpg</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Decorative Tech Badge -->
+              <div class="absolute bottom-2 right-2 bg-slate-900/90 border border-slate-800 px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 text-xs text-slate-300 backdrop-blur-sm">
+                <i data-lucide="code-2" class="w-3.5 h-3.5 text-cyan-400"></i>
+                <span class="font-medium">Frontend &amp; UI</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ABOUT SECTION ================= -->
+    <section id="tentang" class="py-20 bg-slate-900/40 border-t border-slate-800/70 scroll-mt-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="max-w-3xl mb-12 sm:mb-16">
+          <div class="inline-flex items-center gap-2 text-emerald-400 text-sm font-semibold tracking-wider uppercase mb-2">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+            <span>Latar Belakang</span>
+          </div>
+          <h2 class="font-heading font-bold text-2xl sm:text-4xl text-slate-100 tracking-tight">
+            Tentang Saya
+          </h2>
+          <div class="w-12 h-1 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full mt-3"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Deskripsi Utama -->
+          <div class="lg:col-span-7 space-y-5 text-slate-300 leading-relaxed text-base sm:text-lg">
+            <p>
+              Saya adalah mahasiswa aktif Program Studi <span class="text-slate-100 font-semibold">Sistem Informasi semester 3</span> di <span class="text-slate-100 font-semibold">Universitas Nusantara PGRI Kediri</span>. Perjalanan saya di dunia teknologi didorong oleh rasa ingin tahu yang kuat untuk menciptakan aplikasi berbasis web yang estetis, terstruktur, dan berpusat pada pengguna.
+            </p>
+            <p>
+              Selain kegiatan perkuliahan, saya aktif belajar dan berdiskusi dalam <span class="text-emerald-400 font-medium">komunitas koding SIKOKI</span>. Melalui komunitas ini, saya mengasah kemampuan pemecahan masalah serta mendalami praktik terbaik rekayasa perangkat lunak modern.
+            </p>
+            <p>
+              Fokus saya saat ini tertuju pada <span class="text-cyan-400 font-medium">Web Development dan UI/UX Design</span>. Tujuan saya adalah terus belajar secara konsisten, membangun portofolio proyek yang solutif, serta siap berkontribusi dalam tim profesional melalui program magang industri.
+            </p>
+          </div>
+
+          <!-- Highlight Cards / Fakta Profil Ringkas -->
+          <div class="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+            
+            <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="p-2.5 rounded-lg bg-slate-800/80 text-emerald-400 border border-slate-700/60">
+                  <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="font-heading font-semibold text-slate-100 text-sm">Pendidikan</h3>
+                  <p class="text-slate-400 text-sm mt-0.5">S1 Sistem Informasi (Semester 3)</p>
+                  <p class="text-slate-500 text-xs mt-1">Universitas Nusantara PGRI Kediri</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="p-2.5 rounded-lg bg-slate-800/80 text-cyan-400 border border-slate-700/60">
+                  <i data-lucide="users" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="font-heading font-semibold text-slate-100 text-sm">Aktivitas Komunitas</h3>
+                  <p class="text-slate-400 text-sm mt-0.5">Anggota Komunitas SIKOKI</p>
+                  <p class="text-slate-500 text-xs mt-1">Diskusi koding, kolaborasi &amp; sharing session</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors">
+              <div class="flex items-start gap-4">
+                <div class="p-2.5 rounded-lg bg-slate-800/80 text-emerald-400 border border-slate-700/60">
+                  <i data-lucide="target" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="font-heading font-semibold text-slate-100 text-sm">Minat Profesional</h3>
+                  <p class="text-slate-400 text-sm mt-0.5">Frontend Web &amp; UI/UX</p>
+                  <p class="text-slate-500 text-xs mt-1">Eksplorasi antarmuka intuitif &amp; performa web</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= TECH STACK SECTION ================= -->
+    <section id="keahlian" class="py-20 border-t border-slate-800 scroll-mt-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="max-w-3xl mb-12 sm:mb-16">
+          <div class="inline-flex items-center gap-2 text-cyan-400 text-sm font-semibold tracking-wider uppercase mb-2">
+            <i data-lucide="cpu" class="w-4 h-4"></i>
+            <span>Kompetensi Teknis</span>
+          </div>
+          <h2 class="font-heading font-bold text-2xl sm:text-4xl text-slate-100 tracking-tight">
+            Keahlian &amp; Teknologi
+          </h2>
+          <div class="w-12 h-1 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full mt-3"></div>
+          <p class="text-slate-400 mt-4 text-sm sm:text-base">
+            Daftar teknologi dan instrumen yang telah saya pelajari serta sedang aktif dieksplorasi secara realistis dan transparan.
+          </p>
+        </div>
+
+        <!-- Tech Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Card 1: HTML5 -->
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-400/50 transition-all duration-300 group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
+                  <i data-lucide="file-code" class="w-6 h-6"></i>
+                </div>
+                <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-400/10 text-emerald-400 border border-emerald-400/20">
+                  Dasar Kuat
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-lg text-slate-100 group-hover:text-emerald-400 transition-colors">
+                HTML5
+              </h3>
+              <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+                Menyusun struktur dokumen yang semantik, aksesibel, dan memenuhi standar web modern serta optimasi SEO dasar.
+              </p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center gap-1.5 text-xs text-slate-500">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Semantik &bull; Aksesibilitas</span>
+            </div>
+          </div>
+
+          <!-- Card 2: CSS3 / Tailwind CSS -->
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-400/50 transition-all duration-300 group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-cyan-400 group-hover:scale-105 transition-transform">
+                  <i data-lucide="palette" class="w-6 h-6"></i>
+                </div>
+                <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
+                  Aktif Digunakan
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-lg text-slate-100 group-hover:text-cyan-400 transition-colors">
+                CSS / Tailwind CSS
+              </h3>
+              <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+                Membangun antarmuka responsif dan konsisten dengan tata letak Flexbox, CSS Grid, serta utility-first styling.
+              </p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center gap-1.5 text-xs text-slate-500">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Responsive Design &bull; Dark Mode</span>
+            </div>
+          </div>
+
+          <!-- Card 3: JavaScript -->
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-400/50 transition-all duration-300 group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
+                  <i data-lucide="braces" class="w-6 h-6"></i>
+                </div>
+                <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                  Sedang Dipelajari
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-lg text-slate-100 group-hover:text-emerald-400 transition-colors">
+                JavaScript (Vanilla)
+              </h3>
+              <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+                Manipulasi DOM, penanganan event interaktif, dan penerapan logika dasar frontend untuk pengalaman pengguna yang dinamis.
+              </p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center gap-1.5 text-xs text-slate-500">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>DOM Manipulation &bull; ES6+ Dasar</span>
+            </div>
+          </div>
+
+          <!-- Card 4: Git & GitHub -->
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-400/50 transition-all duration-300 group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-cyan-400 group-hover:scale-105 transition-transform">
+                  <i data-lucide="git-branch" class="w-6 h-6"></i>
+                </div>
+                <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-400/10 text-emerald-400 border border-emerald-400/20">
+                  Dasar Kuat
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-lg text-slate-100 group-hover:text-cyan-400 transition-colors">
+                Git &amp; GitHub
+              </h3>
+              <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+                Manajemen versi kode, branching sederhana, kolaborasi tim, dan proses deployment statis melalui GitHub Pages.
+              </p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center gap-1.5 text-xs text-slate-500">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Version Control &bull; GitHub Pages</span>
+            </div>
+          </div>
+
+          <!-- Card 5: UI/UX Design -->
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-emerald-400/50 transition-all duration-300 group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
+                  <i data-lucide="layout" class="w-6 h-6"></i>
+                </div>
+                <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                  Sedang Dipelajari
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-lg text-slate-100 group-hover:text-emerald-400 transition-colors">
+                UI/UX Design
+              </h3>
+              <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+                Eksplorasi wireframing, hierarki visual antarmuka, pemilihan warna, dan pembuatan prototipe interaktif di Figma.
+              </p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center gap-1.5 text-xs text-slate-500">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>Wireframing &bull; Design System Dasar</span>
+            </div>
+          </div>
+
+          <!-- Card 6: Pendekatan & Metodologi Belajar -->
+          <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-400/50 transition-all duration-300 group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="w-12 h-12 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-center text-cyan-400 group-hover:scale-105 transition-transform">
+                  <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <span class="px-2.5 py-1 text-xs font-medium rounded-full bg-cyan-400/10 text-cyan-400 border border-cyan-400/20">
+                  Prinsip Kerja
+                </span>
+              </div>
+              <h3 class="font-heading font-bold text-lg text-slate-100 group-hover:text-cyan-400 transition-colors">
+                Clean Code &amp; Responsiveness
+              </h3>
+              <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+                Menerapkan pola pikir mobile-first, struktur file yang rapi, dan kode yang mudah dirawat serta dipelajari kembali.
+              </p>
+            </div>
+            <div class="mt-4 pt-4 border-t border-slate-800/80 flex items-center gap-1.5 text-xs text-slate-500">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Mobile-First &bull; Semantic HTML</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= PROYEK SECTION (TAHAP LANJUTAN / PLACEHOLDER) ================= -->
+    <!-- Sesuai PRD Bagian 7.5 & 13: Menyiapkan section tujuan yang valid agar tautan tidak rusak -->
+    <section id="proyek" class="py-20 bg-slate-900/40 border-t border-slate-800 scroll-mt-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="max-w-3xl mb-12">
+          <div class="inline-flex items-center gap-2 text-emerald-400 text-sm font-semibold tracking-wider uppercase mb-2">
+            <i data-lucide="folder-git-2" class="w-4 h-4"></i>
+            <span>Karya &amp; Eksplorasi</span>
+          </div>
+          <h2 class="font-heading font-bold text-2xl sm:text-4xl text-slate-100 tracking-tight">
+            Proyek
+          </h2>
+          <div class="w-12 h-1 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full mt-3"></div>
+        </div>
+
+        <!-- Placeholder Showcase Card -->
+        <div class="rounded-2xl border border-dashed border-slate-800 bg-slate-900/60 p-8 sm:p-12 text-center max-w-2xl mx-auto">
+          <div class="w-14 h-14 rounded-2xl bg-slate-800/80 border border-slate-700 mx-auto flex items-center justify-center text-emerald-400 mb-4">
+            <i data-lucide="clock" class="w-7 h-7"></i>
+          </div>
+          <h3 class="font-heading font-semibold text-xl text-slate-100 mb-2">
+            Dokumentasi Proyek Segera Hadir
+          </h3>
+          <p class="text-slate-400 text-sm sm:text-base leading-relaxed mb-6">
+            Saat ini saya sedang menyusun beberapa studi kasus dan proyek latihan Web Development berbasis Tailwind CSS serta JavaScript yang akan dipublikasikan pada tahap berikutnya.
+          </p>
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs font-medium text-slate-300">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <span>Rencana Pengembangan: Tahap 2</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= KONTAK SECTION (TAHAP LANJUTAN / PLACEHOLDER) ================= -->
+    <!-- Sesuai PRD Bagian 7.5 & 13: Menyiapkan section tujuan yang valid agar tautan tidak rusak -->
+    <section id="kontak" class="py-20 border-t border-slate-800 scroll-mt-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="max-w-3xl mb-12">
+          <div class="inline-flex items-center gap-2 text-cyan-400 text-sm font-semibold tracking-wider uppercase mb-2">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            <span>Terhubung</span>
+          </div>
+          <h2 class="font-heading font-bold text-2xl sm:text-4xl text-slate-100 tracking-tight">
+            Kontak &amp; Jejaring
+          </h2>
+          <div class="w-12 h-1 bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full mt-3"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6">
+              Terbuka untuk diskusi koding, kolaborasi proyek komunitas SIKOKI, dan informasi seputar kesempatan magang.
+            </p>
+            <div class="space-y-3">
+              <div class="flex items-center gap-3 text-sm text-slate-400">
+                <div class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-emerald-400">
+                  <i data-lucide="map-pin" class="w-4 h-4"></i>
+                </div>
+                <span>Kediri, Jawa Timur, Indonesia</span>
+              </div>
+              <div class="flex items-center gap-3 text-sm text-slate-400">
+                <div class="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 flex items-center justify-center text-cyan-400">
+                  <i data-lucide="school" class="w-4 h-4"></i>
+                </div>
+                <span>Universitas Nusantara PGRI Kediri</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Tautan Kontak & Profil Publik -->
+          <div class="p-6 sm:p-8 rounded-2xl bg-slate-900 border border-slate-800">
+            <h3 class="font-heading font-semibold text-slate-100 text-lg mb-4">Saluran Profesional</h3>
+            <div class="space-y-3">
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-400/50 hover:bg-slate-900 transition-all text-slate-300 hover:text-emerald-400">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="github" class="w-5 h-5"></i>
+                  <span class="text-sm font-medium">GitHub Repository</span>
+                </div>
+                <i data-lucide="external-link" class="w-4 h-4 text-slate-500"></i>
+              </a>
+
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-cyan-400/50 hover:bg-slate-900 transition-all text-slate-300 hover:text-cyan-400">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="linkedin" class="w-5 h-5"></i>
+                  <span class="text-sm font-medium">Profil LinkedIn</span>
+                </div>
+                <i data-lucide="external-link" class="w-4 h-4 text-slate-500"></i>
+              </a>
+
+              <a href="mailto:email@example.com" class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-400/50 hover:bg-slate-900 transition-all text-slate-300 hover:text-emerald-400">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="mail" class="w-5 h-5"></i>
+                  <span class="text-sm font-medium">Kirim Email</span>
+                </div>
+                <i data-lucide="arrow-right" class="w-4 h-4 text-slate-500"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span>&copy; 2026 [Nama Lengkap]. Dibuat untuk Komunitas SIKOKI &bull; UNP Kediri.</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span>Dibangun dengan HTML5, Tailwind CSS, &amp; Vanilla JS</span>
+        <a href="#hero" class="text-slate-400 hover:text-emerald-400 transition-colors p-1" aria-label="Kembali ke atas">
+          <i data-lucide="arrow-up" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

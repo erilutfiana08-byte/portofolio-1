@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eri lutfiana | Bakery & Cake Shop Premium</title>
+  <meta name="description" content="eri lutfiana - Toko kue dan bakery online terpercaya untuk setiap perayaan spesial. Nikmati kue cokelat mewah, hampers, cake ulang tahun, dan aneka dessert lezat.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎂</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#FDF2F2',
+              100: '#FCE7E7',
+              200: '#FAD2D4',
+              300: '#F4A7AB',
+              400: '#EB7077',
+              500: '#DC3B44',
+              600: '#B8232C',
+              700: '#941B23',
+              800: '#801419', // Main brand deep red from image
+              900: '#640E13',
+              950: '#3D070B',
+            },
+            cream: {
+              base: '#FAF2EC', // Page background
+              light: '#FCF8F5',
+              card: '#FFFFFF',
+              subtle: '#FCEEE8',
+              border: '#EEDDD4'
+            },
+            accent: {
+              gold: '#E5A823',
+              goldLight: '#FDF3D8',
+              chocolate: '#3D1D16'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+            cursive: ['"Alex Brush"', '"Playfair Display"', 'cursive'],
+            serif: ['"Playfair Display"', 'serif'],
+          },
+          boxShadow: {
+            'soft': '0 8px 30px rgba(128, 20, 25, 0.06)',
+            'card': '0 4px 20px rgba(80, 15, 20, 0.08)',
+            'float': '0 16px 36px rgba(128, 20, 25, 0.16)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom styling for precise reproduction */
+    body {
+      background-color: #FAF2EC;
+      color: #3D1D16;
+    }
+    
+    .font-script {
+      font-family: 'Alex Brush', cursive;
+    }
+
+    /* Decorative dotted ticket border */
+    .ticket-dashed-border {
+      background-image: radial-gradient(circle at 0 50%, transparent 12px, #FFF2D6 13px),
+                        radial-gradient(circle at 100% 50%, transparent 12px, #FFF2D6 13px);
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF2EC;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D9A0A4;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #801419;
+    }
+
+    /* Floating badge animation */
+    @keyframes subtlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+    .pulse-subtle {
+      animation: subtlePulse 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased text-[#3D1D16] min-h-screen flex flex-col selection:bg-brand-200 selection:text-brand-900">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+  <!-- Quick Cart Drawer / Slide-over -->
+  <div id="cart-drawer-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div id="cart-drawer" class="absolute right-0 top-0 h-full w-full max-w-md bg-[#FCF8F5] shadow-2xl p-6 flex flex-col transform translate-x-full transition-transform duration-300 ease-out">
+      <div class="flex items-center justify-between pb-4 border-b border-cream-border">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-cake-candles text-brand-800 text-xl"></i>
+          <h3 class="text-xl font-display font-bold text-brand-800">Keranjang Belanja</h3>
+          <span id="cart-drawer-count" class="bg-brand-100 text-brand-800 text-xs font-bold px-2 py-0.5 rounded-full">0 item</span>
+        </div>
+        <button onclick="toggleCartDrawer(false)" class="w-8 h-8 rounded-full hover:bg-cream-subtle flex items-center justify-center text-brand-800 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Cart Item List -->
+      <div id="cart-items-list" class="flex-1 overflow-y-auto py-4 space-y-3">
+        <div id="cart-empty-state" class="h-full flex flex-col items-center justify-center text-center p-8 text-stone-500">
+          <div class="w-20 h-20 rounded-full bg-brand-50 flex items-center justify-center text-brand-700 text-3xl mb-4">
+            <i class="fa-solid fa-basket-shopping"></i>
+          </div>
+          <p class="font-display font-semibold text-stone-800 mb-1">Keranjang masih kosong</p>
+          <p class="text-xs text-stone-500 mb-4">Pilih kue lezat favoritmu dan tambahkan ke keranjang sekarang!</p>
+          <button onclick="toggleCartDrawer(false)" class="bg-brand-800 hover:bg-brand-900 text-white text-xs font-bold px-5 py-2.5 rounded-full transition shadow">
+            Mulai Belanja
+          </button>
+        </div>
+      </div>
+
+      <!-- Cart Footer -->
+      <div id="cart-footer" class="pt-4 border-t border-cream-border hidden">
+        <div class="flex justify-between items-center mb-3">
+          <span class="text-sm text-stone-600">Subtotal:</span>
+          <span id="cart-subtotal" class="font-display font-bold text-lg text-brand-800">Rp 0</span>
+        </div>
+        <div class="text-xs text-emerald-700 bg-emerald-50 p-2.5 rounded-xl flex items-center gap-2 mb-4">
+          <i class="fa-solid fa-truck-fast"></i>
+          <span>Selamat! Kamu dapat diskon pengiriman instan.</span>
+        </div>
+        <button onclick="checkoutOrder()" class="w-full bg-brand-800 hover:bg-brand-900 active:scale-[0.98] text-white py-3.5 rounded-full font-display font-bold text-sm tracking-wide transition shadow-lg flex items-center justify-center gap-2">
+          <span>Checkout Sekarang</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coupon Ticket Modal -->
+  <div id="ticket-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-gradient-to-br from-amber-50 via-white to-orange-50 border-2 border-dashed border-amber-400 max-w-md w-full rounded-3xl p-7 shadow-2xl relative transform scale-95 transition-transform duration-300">
+      <button onclick="toggleTicketModal(false)" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center transition">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="text-center">
+        <span class="inline-block bg-amber-400 text-brand-950 text-xs font-extrabold uppercase px-3 py-1 rounded-full mb-3 tracking-wider">
+          🎉 The Magical Ticket Unlocked!
+        </span>
+        <h3 class="text-2xl font-display font-black text-brand-800 mb-2">Voucher Diskon Rp 150.000</h3>
+        <p class="text-stone-600 text-sm mb-5">Gunakan kode kupon di bawah ini saat checkout untuk mendapatkan potongan langsung pada pemesanan kue impianmu.</p>
+        
+        <div class="bg-amber-100/70 border-2 border-dashed border-amber-500 rounded-2xl p-4 flex items-center justify-between gap-2 mb-5">
+          <span id="coupon-code" class="font-mono text-xl font-black text-brand-900 tracking-wider">ERILUTFIANA750</span>
+          <button onclick="copyCouponCode()" class="bg-brand-800 hover:bg-brand-900 text-white text-xs font-bold px-4 py-2 rounded-xl transition flex items-center gap-1.5 shadow">
+            <i class="fa-regular fa-copy"></i>
+            <span id="copy-btn-text">Salin</span>
+          </button>
+        </div>
+
+        <p class="text-xs text-stone-500 mb-5">Berlaku untuk semua kue bertema, hampers, dan chocolate bliss series hingga akhir bulan.</p>
+        <button onclick="toggleTicketModal(false); scrollToMenu();" class="w-full bg-brand-800 hover:bg-brand-900 text-white font-bold py-3 rounded-full text-sm shadow transition">
+          Gunakan Kupon Sekarang
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER (Matching image layout centered with max-w-5xl/6xl) -->
+  <div class="max-w-5xl mx-auto w-full px-4 sm:px-6 py-4 flex-1 flex flex-col">
+
+    <!-- ========================================== -->
+    <!-- 1. TOP HEADER & NAVBAR -->
+    <!-- ========================================== -->
+    <header class="w-full mb-3">
+      <!-- Row 1: Brand, Search, User/Cart -->
+      <div class="flex items-center justify-between gap-3 md:gap-6 py-2">
+        
+        <!-- Brand Name: eri lutfiana -->
+        <a href="#" class="group flex items-center gap-1.5 flex-shrink-0">
+          <span class="text-2xl sm:text-3xl font-display font-extrabold text-brand-800 tracking-tight group-hover:text-brand-900 transition-colors">
+            eri lutfiana
+          </span>
+          <span class="w-2 h-2 rounded-full bg-brand-800 mt-2"></span>
+        </a>
+
+        <!-- Search Bar -->
+        <div class="flex-1 max-w-md mx-2 relative hidden sm:block">
+          <div class="relative flex items-center">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 text-stone-400 text-xs"></i>
+            <input 
+              id="search-input" 
+              type="text" 
+              placeholder="Search cakes, desserts, hampers..." 
+              class="w-full bg-white border border-[#E8D7CF] rounded-full pl-9 pr-11 py-2 text-xs sm:text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:border-brand-700 focus:ring-1 focus:ring-brand-700 shadow-sm transition"
+              oninput="handleSearch(this.value)"
+            >
+            <button onclick="triggerSearch()" class="absolute right-1 w-7 h-7 rounded-full bg-brand-800 hover:bg-brand-900 text-white flex items-center justify-center text-xs transition shadow-sm" title="Search">
+              <i class="fa-solid fa-magnifying-glass text-[10px]"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Login / Signup & Cart -->
+        <div class="flex items-center gap-4 flex-shrink-0 text-brand-800">
+          
+          <!-- Search button mobile -->
+          <button onclick="document.getElementById('mobile-search-bar').classList.toggle('hidden')" class="sm:hidden text-lg text-brand-800 p-1">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+
+          <!-- Cart Icon with Badge -->
+          <button onclick="toggleCartDrawer(true)" class="relative p-1.5 hover:text-brand-950 transition flex items-center gap-1" title="Keranjang Belanja">
+            <i class="fa-solid fa-basket-shopping text-xl"></i>
+            <span id="cart-badge" class="absolute -top-1 -right-2 bg-brand-800 text-white font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center border-2 border-cream-base">
+              0
+            </span>
+          </button>
+
+          <!-- Login / Signup Link -->
+          <a href="#login" onclick="showAuthMessage(event)" class="text-xs sm:text-sm font-semibold hover:text-brand-950 flex items-center gap-1.5 transition">
+            <i class="fa-regular fa-user text-xs"></i>
+            <span>Login/Signup</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Mobile Search Field Expandable -->
+      <div id="mobile-search-bar" class="sm:hidden hidden mt-2 mb-1">
+        <div class="relative flex items-center">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 text-stone-400 text-xs"></i>
+          <input 
+            type="text" 
+            placeholder="Search cakes, desserts..." 
+            class="w-full bg-white border border-[#E8D7CF] rounded-full pl-9 pr-9 py-2 text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:border-brand-700 shadow-sm"
+            oninput="handleSearch(this.value)"
+          >
+        </div>
+      </div>
+
+      <!-- Row 2: Sub-navigation & "ORDER NOW" Button -->
+      <div class="flex items-center justify-between pt-2 pb-1 border-t border-[#EBDCD3]/70 overflow-x-auto no-scrollbar">
+        <nav class="flex items-center gap-3 sm:gap-6 text-xs sm:text-[13px] font-semibold text-brand-800 whitespace-nowrap">
+          <button onclick="filterCategory('cakes')" class="nav-filter hover:text-brand-950 hover:underline underline-offset-4 decoration-2 transition">Cakes</button>
+          <button onclick="filterCategory('theme')" class="nav-filter hover:text-brand-950 hover:underline underline-offset-4 decoration-2 transition">Theme Cakes</button>
+          <button onclick="filterCategory('desserts')" class="nav-filter hover:text-brand-950 hover:underline underline-offset-4 decoration-2 transition">Desserts</button>
+          <button onclick="filterCategory('birthday')" class="nav-filter hover:text-brand-950 hover:underline underline-offset-4 decoration-2 transition">Birthday</button>
+          <button onclick="filterCategory('hampers')" class="nav-filter hover:text-brand-950 hover:underline underline-offset-4 decoration-2 transition">Hampers</button>
+          <button onclick="filterCategory('anniversary')" class="nav-filter hover:text-brand-950 hover:underline underline-offset-4 decoration-2 transition">Anniversary</button>
+          <button onclick="filterCategory('occasions')" class="nav-filter hover:text-brand-950 hover:underline underline-offset-4 decoration-2 transition">Occasions</button>
+        </nav>
+
+        <button onclick="scrollToMenu()" class="ml-3 flex-shrink-0 bg-brand-800 hover:bg-brand-900 active:scale-95 text-white font-display font-bold text-[11px] sm:text-xs tracking-wider px-4 py-1.5 sm:px-5 sm:py-2 rounded-full uppercase shadow transition">
+          ORDER NOW
+        </button>
+      </div>
+    </header>
+
+
+    <!-- ========================================== -->
+    <!-- 2. HERO BANNER: DECADENT CHOCOLATE BLISS -->
+    <!-- ========================================== -->
+    <section class="relative w-full rounded-3xl bg-gradient-to-r from-[#7B1113] via-[#8B181E] to-[#6A0E13] text-white p-6 sm:p-8 md:p-10 shadow-float overflow-hidden mb-8">
+      
+      <!-- Decorative background wave / circle lines -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full border border-white/10 pointer-events-none"></div>
+      <div class="absolute -right-10 -bottom-10 w-60 h-60 rounded-full border border-white/10 pointer-events-none"></div>
+      <div class="absolute left-1/3 top-0 w-96 h-96 rounded-full bg-radial from-white/5 to-transparent pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-10">
+        
+        <!-- Left: Big Chocolate Cake with Berries in White Circular Frame -->
+        <div class="relative flex-shrink-0">
+          <div class="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full border-4 border-white shadow-2xl overflow-hidden bg-brand-950 p-1 group">
+            <img 
+              src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80" 
+              alt="Decadent Chocolate Cake with Berries" 
+              class="w-full h-full object-cover rounded-full group-hover:scale-105 transition-transform duration-500"
+              loading="eager"
+            >
+          </div>
+          <!-- Little sparkles / badge -->
+          <div class="absolute -bottom-2 right-2 bg-accent-gold text-brand-950 font-black text-[11px] px-3 py-1 rounded-full shadow-lg border border-white flex items-center gap-1">
+            <i class="fa-solid fa-crown text-[10px]"></i>
+            <span>Signature</span>
+          </div>
+        </div>
+
+        <!-- Center: Headline & Typography -->
+        <div class="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start justify-center">
+          
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-black tracking-tight uppercase leading-[1.08] text-white mb-2 drop-shadow-sm">
+            DECADENT<br>CHOCOLATE<br>BLISS!
+          </h1>
+
+          <!-- Flourish Cursive Script -->
+          <div class="relative inline-block mb-5">
+            <p class="font-script text-3xl sm:text-4xl text-amber-200/95 tracking-wide leading-none">
+              Satisfy Your Sweetest Cravings
+            </p>
+            <!-- Decorative curl line -->
+            <svg class="w-28 sm:w-36 h-3 text-amber-200/60 mt-1 mx-auto lg:mx-0" viewBox="0 0 100 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 5C20 1 40 9 60 4C80 -1 90 7 100 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- Special Offer Pill -->
+          <div class="inline-flex items-center gap-2 bg-brand-900/80 backdrop-blur-sm border border-brand-300/30 px-4 py-2 rounded-2xl shadow-inner">
+            <span class="text-[11px] text-amber-200 uppercase font-semibold tracking-wider">Special Offer</span>
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            <span class="text-sm font-display font-extrabold text-white tracking-wide">SAVE 20%</span>
+          </div>
+        </div>
+
+        <!-- Right: 2 Floating Circular Preview Cards (Lava cake & pastry slice) -->
+        <div class="flex flex-row lg:flex-col items-center justify-center gap-4 sm:gap-6 flex-shrink-0">
+          
+          <!-- Preview 1: Molten Chocolate Lava Cake -->
+          <div class="flex flex-col items-center group cursor-pointer" onclick="quickAddToCart('Rich Chocolate Truffle Cake', 150000, 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=400&q=80')">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-xl overflow-hidden bg-brand-950 p-0.5 transform group-hover:scale-105 transition-all duration-300">
+              <img 
+                src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=400&q=80" 
+                alt="Molten Chocolate Cake" 
+                class="w-full h-full object-cover rounded-full"
+              >
+            </div>
+            <span class="mt-1 text-[11px] font-semibold text-white/90 group-hover:text-amber-200 transition">Molten Lava</span>
+          </div>
+
+          <!-- Preview 2: Chocolate Pastry Slice -->
+          <div class="flex flex-col items-center group cursor-pointer" onclick="quickAddToCart('Rich Butterscotch Crunch Cake', 120000, 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=400&q=80')">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white shadow-xl overflow-hidden bg-brand-950 p-0.5 transform group-hover:scale-105 transition-all duration-300">
+              <img 
+                src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=400&q=80" 
+                alt="Dark Chocolate Pastry Slice" 
+                class="w-full h-full object-cover rounded-full"
+              >
+            </div>
+            <span class="mt-1 text-[11px] font-semibold text-white/90 group-hover:text-amber-200 transition">Fudge Slice</span>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- 3. MENU CATEGORIES SECTION -->
+    <!-- ========================================== -->
+    <section id="menu-section" class="w-full mb-10">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-5 gap-2">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-display font-extrabold text-brand-800 leading-tight">
+            Menu
+          </h2>
+          <p class="text-xs sm:text-sm font-medium text-stone-600">
+            What will you wish for?
+          </p>
+        </div>
+
+        <!-- Social mini icons indicator on left/top right -->
+        <div class="flex items-center gap-2 text-brand-800/80 text-xs">
+          <span class="w-7 h-7 rounded-full bg-white border border-[#EBDCD3] flex items-center justify-center hover:bg-brand-50 transition cursor-pointer" title="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </span>
+          <span class="w-7 h-7 rounded-full bg-white border border-[#EBDCD3] flex items-center justify-center hover:bg-brand-50 transition cursor-pointer" title="Custom Orders">
+            <i class="fa-solid fa-cake-candles"></i>
+          </span>
+          <span class="w-7 h-7 rounded-full bg-white border border-[#EBDCD3] flex items-center justify-center hover:bg-brand-50 transition cursor-pointer" title="Store Location">
+            <i class="fa-solid fa-location-dot"></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- 4 Category Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-5">
+        
+        <!-- Category 1: CLASSIC -->
+        <div onclick="filterProducts('classic')" class="category-card cursor-pointer group bg-white border border-[#E8D7CF] hover:border-brand-700 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-card transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl bg-brand-50 group-hover:bg-brand-100 flex items-center justify-center text-brand-800 text-2xl mb-3 transition-colors">
+            <i class="fa-solid fa-cake-candles"></i>
+          </div>
+          <span class="font-display font-bold text-xs sm:text-sm text-stone-800 group-hover:text-brand-800 tracking-wider uppercase transition">
+            CLASSIC
+          </span>
+        </div>
+
+        <!-- Category 2: GOURMET -->
+        <div onclick="filterProducts('gourmet')" class="category-card cursor-pointer group bg-white border border-[#E8D7CF] hover:border-brand-700 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-card transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl bg-brand-50 group-hover:bg-brand-100 flex items-center justify-center text-brand-800 text-2xl mb-3 transition-colors">
+            <i class="fa-solid fa-gift"></i>
+          </div>
+          <span class="font-display font-bold text-xs sm:text-sm text-stone-800 group-hover:text-brand-800 tracking-wider uppercase transition">
+            GOURMET
+          </span>
+        </div>
+
+        <!-- Category 3: DESSERTS -->
+        <div onclick="filterProducts('desserts')" class="category-card cursor-pointer group bg-white border border-[#E8D7CF] hover:border-brand-700 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-card transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl bg-brand-50 group-hover:bg-brand-100 flex items-center justify-center text-brand-800 text-2xl mb-3 transition-colors">
+            <i class="fa-solid fa-ice-cream"></i>
+          </div>
+          <span class="font-display font-bold text-xs sm:text-sm text-stone-800 group-hover:text-brand-800 tracking-wider uppercase transition">
+            DESSERTS
+          </span>
+        </div>
+
+        <!-- Category 4: COOKIES -->
+        <div onclick="filterProducts('cookies')" class="category-card cursor-pointer group bg-white border border-[#E8D7CF] hover:border-brand-700 rounded-2xl p-4 sm:p-5 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-card transition-all duration-300">
+          <div class="w-14 h-14 rounded-2xl bg-brand-50 group-hover:bg-brand-100 flex items-center justify-center text-brand-800 text-2xl mb-3 transition-colors">
+            <i class="fa-solid fa-cookie-bite"></i>
+          </div>
+          <span class="font-display font-bold text-xs sm:text-sm text-stone-800 group-hover:text-brand-800 tracking-wider uppercase transition">
+            COOKIES
+          </span>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- 4. BESTSELLERS SECTION -->
+    <!-- ========================================== -->
+    <section class="w-full mb-12">
+      
+      <!-- Section Title -->
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl sm:text-2xl font-display font-bold text-brand-800">
+          Bestsellers from Across the Country
+        </h2>
+        <span id="active-filter-indicator" class="text-xs text-stone-500 italic hidden">Menampilkan filter</span>
+      </div>
+
+      <!-- 4 Product Cards Grid -->
+      <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <!-- Card 1: Rich Chocolate Truffle Cake -->
+        <div class="product-item group bg-white border border-[#E8D7CF] hover:border-brand-700/60 rounded-3xl p-4 shadow-sm hover:shadow-card transition-all duration-300 flex flex-col" data-category="classic">
+          <!-- Top Row: Favorite Heart -->
+          <div class="flex justify-between items-center mb-1">
+            <button onclick="toggleFavorite(this, 'Rich Chocolate Truffle Cake')" class="w-7 h-7 rounded-full text-brand-700 hover:text-brand-900 flex items-center justify-center transition">
+              <i class="fa-regular fa-heart text-base"></i>
+            </button>
+            <span class="text-[10px] bg-brand-50 text-brand-800 font-bold px-2 py-0.5 rounded-full">Bestseller</span>
+          </div>
+
+          <!-- Product Image -->
+          <div class="w-full h-36 sm:h-40 rounded-2xl overflow-hidden bg-stone-100 mb-3 flex items-center justify-center">
+            <img 
+              src="https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=500&q=80" 
+              alt="Rich Chocolate Truffle Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+          </div>
+
+          <!-- Title & Specs -->
+          <h3 class="font-display font-bold text-sm sm:text-[15px] text-stone-900 leading-snug line-clamp-2 mb-1 group-hover:text-brand-800 transition">
+            Rich Chocolate Truffle Cake
+          </h3>
+          <p class="text-[11px] text-stone-500 mb-2">500g • Signature Dark Truffle</p>
+
+          <!-- Price & Ratings & Add Button -->
+          <div class="mt-auto pt-2 border-t border-[#F2E5DF] flex items-end justify-between">
+            <div>
+              <div class="flex items-baseline gap-1.5">
+                <span class="font-display font-extrabold text-base text-brand-800">Rp 150.000</span>
+                <span class="text-[11px] text-stone-400 line-through">Rp 185.000</span>
+              </div>
+              <div class="flex items-center gap-1 text-[11px] text-amber-500 mt-0.5">
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <span class="text-stone-500 font-semibold text-[10px] ml-0.5">(168)</span>
+              </div>
+            </div>
+
+            <!-- Red Circular Add Button -->
+            <button 
+              onclick="quickAddToCart('Rich Chocolate Truffle Cake', 150000, 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=500&q=80')" 
+              class="w-8 h-8 rounded-full bg-brand-800 hover:bg-brand-900 active:scale-90 text-white flex items-center justify-center shadow transition-transform" 
+              title="Add to Cart"
+            >
+              <i class="fa-solid fa-plus text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2: Choco Chip Truffle Cake -->
+        <div class="product-item group bg-white border border-[#E8D7CF] hover:border-brand-700/60 rounded-3xl p-4 shadow-sm hover:shadow-card transition-all duration-300 flex flex-col" data-category="classic">
+          <!-- Top Row: Favorite Heart -->
+          <div class="flex justify-between items-center mb-1">
+            <button onclick="toggleFavorite(this, 'Choco Chip Truffle Cake')" class="w-7 h-7 rounded-full text-brand-700 hover:text-brand-900 flex items-center justify-center transition">
+              <i class="fa-regular fa-heart text-base"></i>
+            </button>
+            <span class="text-[10px] bg-amber-50 text-amber-800 font-bold px-2 py-0.5 rounded-full">Crunchy</span>
+          </div>
+
+          <!-- Product Image -->
+          <div class="w-full h-36 sm:h-40 rounded-2xl overflow-hidden bg-stone-100 mb-3 flex items-center justify-center">
+            <img 
+              src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=500&q=80" 
+              alt="Choco Chip Truffle Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+          </div>
+
+          <!-- Title & Specs -->
+          <h3 class="font-display font-bold text-sm sm:text-[15px] text-stone-900 leading-snug line-clamp-2 mb-1 group-hover:text-brand-800 transition">
+            Choco Chip Truffle Cake
+          </h3>
+          <p class="text-[11px] text-stone-500 mb-2">500g • Belgian Choco Shavings</p>
+
+          <!-- Price & Ratings & Add Button -->
+          <div class="mt-auto pt-2 border-t border-[#F2E5DF] flex items-end justify-between">
+            <div>
+              <div class="flex items-baseline gap-1.5">
+                <span class="font-display font-extrabold text-base text-brand-800">Rp 175.000</span>
+                <span class="text-[11px] text-stone-400 line-through">Rp 210.000</span>
+              </div>
+              <div class="flex items-center gap-1 text-[11px] text-amber-500 mt-0.5">
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <span class="text-stone-500 font-semibold text-[10px] ml-0.5">(188)</span>
+              </div>
+            </div>
+
+            <!-- Red Circular Add Button -->
+            <button 
+              onclick="quickAddToCart('Choco Chip Truffle Cake', 175000, 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=500&q=80')" 
+              class="w-8 h-8 rounded-full bg-brand-800 hover:bg-brand-900 active:scale-90 text-white flex items-center justify-center shadow transition-transform" 
+              title="Add to Cart"
+            >
+              <i class="fa-solid fa-plus text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3: Tropical Fruit N Almond Cake -->
+        <div class="product-item group bg-white border border-[#E8D7CF] hover:border-brand-700/60 rounded-3xl p-4 shadow-sm hover:shadow-card transition-all duration-300 flex flex-col" data-category="gourmet">
+          <!-- Top Row: Favorite Heart -->
+          <div class="flex justify-between items-center mb-1">
+            <button onclick="toggleFavorite(this, 'Tropical Fruit N Almond Cake')" class="w-7 h-7 rounded-full text-brand-700 hover:text-brand-900 flex items-center justify-center transition">
+              <i class="fa-regular fa-heart text-base"></i>
+            </button>
+            <span class="text-[10px] bg-emerald-50 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Fresh</span>
+          </div>
+
+          <!-- Product Image -->
+          <div class="w-full h-36 sm:h-40 rounded-2xl overflow-hidden bg-stone-100 mb-3 flex items-center justify-center">
+            <img 
+              src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=500&q=80" 
+              alt="Tropical Fruit N Almond Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+          </div>
+
+          <!-- Title & Specs -->
+          <h3 class="font-display font-bold text-sm sm:text-[15px] text-stone-900 leading-snug line-clamp-2 mb-1 group-hover:text-brand-800 transition">
+            Tropical Fruit N Almond Cake
+          </h3>
+          <p class="text-[11px] text-stone-500 mb-2">500g • Roasted Almond & Fruits</p>
+
+          <!-- Price & Ratings & Add Button -->
+          <div class="mt-auto pt-2 border-t border-[#F2E5DF] flex items-end justify-between">
+            <div>
+              <div class="flex items-baseline gap-1.5">
+                <span class="font-display font-extrabold text-base text-brand-800">Rp 175.000</span>
+                <span class="text-[11px] text-stone-400 line-through">Rp 200.000</span>
+              </div>
+              <div class="flex items-center gap-1 text-[11px] text-amber-500 mt-0.5">
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <span class="text-stone-500 font-semibold text-[10px] ml-0.5">(128)</span>
+              </div>
+            </div>
+
+            <!-- Red Circular Add Button -->
+            <button 
+              onclick="quickAddToCart('Tropical Fruit N Almond Cake', 175000, 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=500&q=80')" 
+              class="w-8 h-8 rounded-full bg-brand-800 hover:bg-brand-900 active:scale-90 text-white flex items-center justify-center shadow transition-transform" 
+              title="Add to Cart"
+            >
+              <i class="fa-solid fa-plus text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 4: Rich Butterscotch Crunch Cake -->
+        <div class="product-item group bg-white border border-[#E8D7CF] hover:border-brand-700/60 rounded-3xl p-4 shadow-sm hover:shadow-card transition-all duration-300 flex flex-col" data-category="desserts">
+          <!-- Top Row: Favorite Heart -->
+          <div class="flex justify-between items-center mb-1">
+            <button onclick="toggleFavorite(this, 'Rich Butterscotch Crunch Cake')" class="w-7 h-7 rounded-full text-brand-700 hover:text-brand-900 flex items-center justify-center transition">
+              <i class="fa-regular fa-heart text-base"></i>
+            </button>
+            <span class="text-[10px] bg-amber-50 text-amber-800 font-bold px-2 py-0.5 rounded-full">Caramel</span>
+          </div>
+
+          <!-- Product Image -->
+          <div class="w-full h-36 sm:h-40 rounded-2xl overflow-hidden bg-stone-100 mb-3 flex items-center justify-center">
+            <img 
+              src="https://images.unsplash.com/photo-1542826438-bd32f43d626f?auto=format&fit=crop&w=500&q=80" 
+              alt="Rich Butterscotch Crunch Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+          </div>
+
+          <!-- Title & Specs -->
+          <h3 class="font-display font-bold text-sm sm:text-[15px] text-stone-900 leading-snug line-clamp-2 mb-1 group-hover:text-brand-800 transition">
+            Rich Butterscotch Crunch Cake
+          </h3>
+          <p class="text-[11px] text-stone-500 mb-2">500g • Praline Caramel Layers</p>
+
+          <!-- Price & Ratings & Add Button -->
+          <div class="mt-auto pt-2 border-t border-[#F2E5DF] flex items-end justify-between">
+            <div>
+              <div class="flex items-baseline gap-1.5">
+                <span class="font-display font-extrabold text-base text-brand-800">Rp 120.000</span>
+                <span class="text-[11px] text-stone-400 line-through">Rp 145.000</span>
+              </div>
+              <div class="flex items-center gap-1 text-[11px] text-amber-500 mt-0.5">
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <i class="fa-solid fa-star text-[10px]"></i>
+                <span class="text-stone-500 font-semibold text-[10px] ml-0.5">(308)</span>
+              </div>
+            </div>
+
+            <!-- Red Circular Add Button -->
+            <button 
+              onclick="quickAddToCart('Rich Butterscotch Crunch Cake', 120000, 'https://images.unsplash.com/photo-1542826438-bd32f43d626f?auto=format&fit=crop&w=500&q=80')" 
+              class="w-8 h-8 rounded-full bg-brand-800 hover:bg-brand-900 active:scale-90 text-white flex items-center justify-center shadow transition-transform" 
+              title="Add to Cart"
+            >
+              <i class="fa-solid fa-plus text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- VIEW ALL Button -->
+      <div class="flex justify-end mt-6">
+        <button onclick="resetFilters(); showAllNotification();" class="bg-brand-800 hover:bg-brand-900 active:scale-95 text-white font-display font-bold text-xs uppercase tracking-wider px-7 py-2.5 rounded-full shadow hover:shadow-md transition">
+          VIEW ALL
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- 5. OUR PROMISE & GALLERY SECTION -->
+    <!-- ========================================== -->
+    <section class="w-full mb-10">
+      
+      <!-- Section Title -->
+      <div class="mb-6">
+        <h2 class="text-2xl sm:text-3xl font-display font-black text-brand-800 leading-tight">
+          Our Promise
+        </h2>
+        <p class="text-xs sm:text-sm font-medium text-stone-600">
+          There's no secret spell – only honest work!
+        </p>
+      </div>
+
+      <!-- Grid: Left Cards & Right 6-Photo Masonry -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- LEFT COLUMN (Span 5) -->
+        <div class="lg:col-span-5 flex flex-col gap-5">
+          
+          <!-- Card 1: 4 Promises Badges -->
+          <div class="bg-[#FCEFEA] border border-[#ECD9D0] rounded-3xl p-5 sm:p-6 shadow-sm">
+            <h4 class="font-display font-bold text-sm text-brand-900 mb-4 text-center">
+              A glimpse into our secret spell – only honest world!
+            </h4>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3 text-center">
+              
+              <!-- 1: On-time Delivery -->
+              <div class="flex flex-col items-center">
+                <div class="w-11 h-11 rounded-full bg-white border border-[#E5CDC3] flex items-center justify-center text-brand-800 text-base mb-1.5 shadow-sm">
+                  <i class="fa-solid fa-truck-clock"></i>
+                </div>
+                <span class="font-display font-extrabold text-[10px] text-stone-900 leading-tight">ON-TIME</span>
+                <span class="text-[9px] text-stone-500 font-semibold">DELIVERY</span>
+              </div>
+
+              <!-- 2: 5100+ Designs -->
+              <div class="flex flex-col items-center">
+                <div class="w-11 h-11 rounded-full bg-white border border-[#E5CDC3] flex items-center justify-center text-brand-800 text-base mb-1.5 shadow-sm">
+                  <i class="fa-solid fa-palette"></i>
+                </div>
+                <span class="font-display font-extrabold text-[10px] text-stone-900 leading-tight">5100+</span>
+                <span class="text-[9px] text-stone-500 font-semibold">DESIGNS</span>
+              </div>
+
+              <!-- 3: 2 CR+ Orders -->
+              <div class="flex flex-col items-center">
+                <div class="w-11 h-11 rounded-full bg-white border border-[#E5CDC3] flex items-center justify-center text-brand-800 text-base mb-1.5 shadow-sm">
+                  <i class="fa-solid fa-heart-circle-check"></i>
+                </div>
+                <span class="font-display font-extrabold text-[10px] text-stone-900 leading-tight">25.000+</span>
+                <span class="text-[9px] text-stone-500 font-semibold">ORDERS</span>
+              </div>
+
+              <!-- 4: Baked Fresh -->
+              <div class="flex flex-col items-center">
+                <div class="w-11 h-11 rounded-full bg-white border border-[#E5CDC3] flex items-center justify-center text-brand-800 text-base mb-1.5 shadow-sm">
+                  <i class="fa-solid fa-wheat-awn"></i>
+                </div>
+                <span class="font-display font-extrabold text-[10px] text-stone-900 leading-tight">BAKED</span>
+                <span class="text-[9px] text-stone-500 font-semibold">FRESH</span>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Card 2: THE MAGICAL TICKET -->
+          <div class="bg-gradient-to-r from-[#FFF5DE] to-[#FFECCC] border border-[#F5D899] rounded-3xl p-5 shadow-sm relative overflow-hidden">
+            <div class="flex items-center gap-4">
+              <!-- Golden Ticket Visual -->
+              <div class="w-16 h-16 sm:w-20 sm:h-20 bg-amber-400 border-2 border-dashed border-amber-600 rounded-2xl flex flex-col items-center justify-center text-amber-950 font-black text-xs shadow transform -rotate-3 flex-shrink-0">
+                <i class="fa-solid fa-ticket text-xl mb-0.5 text-brand-900"></i>
+                <span class="text-[9px] uppercase tracking-wider">TICKET</span>
+              </div>
+
+              <!-- Content -->
+              <div class="flex-1">
+                <h4 class="font-display font-black text-sm sm:text-base text-brand-900 tracking-wide uppercase mb-1">
+                  THE MAGICAL TICKET
+                </h4>
+                <p class="text-xs text-stone-700 leading-snug mb-3">
+                  Add 3 reminders in your account. Win offers worth <strong>Rp 150.000</strong>!
+                </p>
+                <button onclick="toggleTicketModal(true)" class="bg-brand-800 hover:bg-brand-900 active:scale-95 text-white font-display font-bold text-[11px] uppercase tracking-wider px-5 py-1.5 rounded-full shadow transition">
+                  UNLOCK NOW
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Proof / Customer Follow Bar -->
+          <div class="flex items-center gap-3 pt-1">
+            <div class="flex -space-x-2 overflow-hidden">
+              <img class="inline-block h-8 w-8 rounded-full ring-2 ring-cream-base object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Customer avatar">
+              <img class="inline-block h-8 w-8 rounded-full ring-2 ring-cream-base object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Customer avatar">
+              <img class="inline-block h-8 w-8 rounded-full ring-2 ring-cream-base object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="Customer avatar">
+              <img class="inline-block h-8 w-8 rounded-full ring-2 ring-cream-base object-cover" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80" alt="Customer avatar">
+            </div>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="text-xs font-semibold text-brand-800 hover:text-brand-950 flex items-center gap-1.5 transition">
+              <span>Follow us on social!</span>
+              <i class="fa-brands fa-instagram text-sm"></i>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: 6-PHOTO MASONRY GRID (Span 7) -->
+        <div class="lg:col-span-7 grid grid-cols-2 gap-3 sm:gap-4">
+          
+          <!-- Photo 1: Elegant Celebration Tier Cake -->
+          <div class="rounded-2xl overflow-hidden shadow-sm h-40 sm:h-48 group relative">
+            <img 
+              src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=600&q=80" 
+              alt="Artisan Celebration Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+              <span class="text-white text-xs font-semibold">Tier Floral Wedding Cake</span>
+            </div>
+          </div>
+
+          <!-- Photo 2: Cheerful Pastry Chef holding cake -->
+          <div class="rounded-2xl overflow-hidden shadow-sm h-40 sm:h-48 group relative">
+            <img 
+              src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80" 
+              alt="Pastry Chef Holding Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+              <span class="text-white text-xs font-semibold">Crafted by Head Baker</span>
+            </div>
+          </div>
+
+          <!-- Photo 3: Bakers with fresh cake -->
+          <div class="rounded-2xl overflow-hidden shadow-sm h-40 sm:h-48 group relative">
+            <img 
+              src="https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80" 
+              alt="Decorating celebration cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+              <span class="text-white text-xs font-semibold">Fresh From The Oven</span>
+            </div>
+          </div>
+
+          <!-- Photo 4: Happy Moments / Couple with Cake Box -->
+          <div class="rounded-2xl overflow-hidden shadow-sm h-40 sm:h-48 group relative">
+            <img 
+              src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=600&q=80" 
+              alt="Cheer with Celebration Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+              <span class="text-white text-xs font-semibold">Every Celebration Unlocked</span>
+            </div>
+          </div>
+
+          <!-- Photo 5: Master bakers presenting cake -->
+          <div class="rounded-2xl overflow-hidden shadow-sm h-40 sm:h-48 group relative">
+            <img 
+              src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=600&q=80" 
+              alt="Pastry Team Custom Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+              <span class="text-white text-xs font-semibold">Bespoke Birthday Themes</span>
+            </div>
+          </div>
+
+          <!-- Photo 6: Grand celebration cake with floral details -->
+          <div class="rounded-2xl overflow-hidden shadow-sm h-40 sm:h-48 group relative">
+            <img 
+              src="https://images.unsplash.com/photo-1562440499-64c9a111f713?auto=format&fit=crop&w=600&q=80" 
+              alt="Grand Tiered Cake" 
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+              <span class="text-white text-xs font-semibold">Gourmet Fondant Masterpieces</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- 6. RED TRUST & CERTIFICATION BANNER -->
+    <!-- ========================================== -->
+    <section class="w-full mb-12">
+      <div class="w-full rounded-2xl bg-brand-800 text-white py-3.5 px-6 text-center shadow-md flex items-center justify-center gap-3">
+        <i class="fa-solid fa-award text-amber-300 text-lg hidden sm:inline"></i>
+        <p class="font-display font-bold text-xs sm:text-sm tracking-wide">
+          eri lutfiana – Your Trusted Certified Online Bakery for Every Celebration
+        </p>
+        <i class="fa-solid fa-shield-halved text-amber-300 text-sm hidden sm:inline"></i>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- 7. FOOTER SECTION -->
+    <!-- ========================================== -->
+    <footer class="w-full pt-8 pb-12 border-t border-[#E8D7CF]/80 text-[#3D1D16]">
+      
+      <!-- Top Columns -->
+      <div class="grid grid-cols-2 md:grid-cols-6 gap-6 sm:gap-8 mb-8">
+        
+        <!-- Brand & Slogan -->
+        <div class="col-span-2">
+          <a href="#" class="inline-block text-2xl font-display font-black text-brand-800 tracking-tight mb-2">
+            eri lutfiana
+          </a>
+          <p class="text-xs text-stone-600 leading-relaxed mb-4 max-w-sm">
+            Handcrafted cakes, gourmet desserts & celebratory sweet delights baked fresh daily with pure natural ingredients.
+          </p>
+          <div class="flex items-center gap-2 text-brand-800">
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="w-7 h-7 rounded-full bg-white border border-[#EBDCD3] flex items-center justify-center text-xs hover:bg-brand-800 hover:text-white transition">
+              <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener" class="w-7 h-7 rounded-full bg-white border border-[#EBDCD3] flex items-center justify-center text-xs hover:bg-brand-800 hover:text-white transition">
+              <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener" class="w-7 h-7 rounded-full bg-white border border-[#EBDCD3] flex items-center justify-center text-xs hover:bg-brand-800 hover:text-white transition">
+              <i class="fa-brands fa-tiktok"></i>
+            </a>
+            <a href="https://wa.me/" target="_blank" rel="noopener" class="w-7 h-7 rounded-full bg-white border border-[#EBDCD3] flex items-center justify-center text-xs hover:bg-brand-800 hover:text-white transition">
+              <i class="fa-brands fa-whatsapp"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 1: Links (Our Story etc) -->
+        <div class="col-span-1">
+          <ul class="text-[11px] space-y-1.5 text-stone-600">
+            <li><a href="#about" class="hover:text-brand-800 transition">Our Story</a></li>
+            <li><a href="#contact" class="hover:text-brand-800 transition">Contact Us</a></li>
+            <li><a href="#kitchen" class="hover:text-brand-800 transition">Locate Store</a></li>
+            <li><a href="#media" class="hover:text-brand-800 transition">Media</a></li>
+            <li><a href="#careers" class="hover:text-brand-800 transition">Careers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 2: KNOW US -->
+        <div class="col-span-1">
+          <h5 class="text-[11px] font-display font-extrabold text-stone-900 uppercase tracking-wider mb-2">
+            KNOW US
+          </h5>
+          <ul class="text-[11px] space-y-1.5 text-stone-600">
+            <li><a href="#contact" class="hover:text-brand-800 transition">Contact Us</a></li>
+            <li><a href="#blog" class="hover:text-brand-800 transition">Blog</a></li>
+            <li><a href="#chefs" class="hover:text-brand-800 transition">Chef's Table</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: NEED HELP -->
+        <div class="col-span-1">
+          <h5 class="text-[11px] font-display font-extrabold text-stone-900 uppercase tracking-wider mb-2">
+            NEED HELP
+          </h5>
+          <ul class="text-[11px] space-y-1.5 text-stone-600">
+            <li><a href="#refund" class="hover:text-brand-800 transition">Cancellation & Refund</a></li>
+            <li><a href="#privacy" class="hover:text-brand-800 transition">Privacy Policy</a></li>
+            <li><a href="#faqs" class="hover:text-brand-800 transition">Delivery FAQs</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: MORE INFO -->
+        <div class="col-span-1">
+          <h5 class="text-[11px] font-display font-extrabold text-stone-900 uppercase tracking-wider mb-2">
+            MORE INFO
+          </h5>
+          <ul class="text-[11px] space-y-1.5 text-stone-600">
+            <li><a href="#terms" class="hover:text-brand-800 transition">Terms & Policy</a></li>
+            <li><a href="#customer" class="hover:text-brand-800 transition">Customer Guidelines</a></li>
+            <li><a href="#coupons" class="hover:text-brand-800 transition">Coupons & Offers</a></li>
+            <li><a href="#app" class="hover:text-brand-800 transition">Download App</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom Row: Newsletter & Help Button -->
+      <div class="pt-6 border-t border-[#E8D7CF]/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+        
+        <!-- Newsletter Box -->
+        <form onsubmit="handleNewsletter(event)" class="w-full sm:w-auto flex items-center gap-2 max-w-sm">
+          <input 
+            id="newsletter-email" 
+            type="email" 
+            required 
+            placeholder="Enter Email Address" 
+            class="w-full sm:w-64 bg-white border border-[#E8D7CF] rounded-full px-4 py-2 text-xs text-stone-800 placeholder-stone-400 focus:outline-none focus:border-brand-700 shadow-sm"
+          >
+          <button type="submit" class="bg-brand-800 hover:bg-brand-900 active:scale-95 text-white font-display font-bold text-xs uppercase tracking-wider px-5 py-2 rounded-full shadow transition flex-shrink-0">
+            SUBSCRIBE
+          </button>
+        </form>
+
+        <!-- Help Button & Copyright -->
+        <div class="flex items-center gap-4">
+          <p class="text-[11px] text-stone-500">
+            &copy; 2026 eri lutfiana Bakery. All rights reserved.
+          </p>
+
+          <!-- Floating/Pill Help Bubble -->
+          <button onclick="toggleHelpChat()" class="flex items-center gap-2 bg-white border border-[#E8D7CF] hover:border-brand-700 rounded-full px-3 py-1.5 shadow-sm text-xs text-stone-700 hover:text-brand-800 transition" title="Customer Support">
+            <i class="fa-regular fa-circle-question text-brand-800 text-sm"></i>
+            <span class="font-medium">Hey, need any help?</span>
+          </button>
+        </div>
+
+      </div>
+
+    </footer>
+
+  </div>
+
+
+  <!-- Floating Live Support Button (Bottom Right) -->
+  <div class="fixed bottom-5 right-5 z-40">
+    <button onclick="toggleHelpChat()" class="bg-brand-800 hover:bg-brand-900 active:scale-95 text-white w-12 h-12 rounded-full shadow-float flex items-center justify-center transition-all duration-300" title="Bantuan Langsung">
+      <i class="fa-brands fa-whatsapp text-2xl"></i>
+    </button>
+  </div>
+
+
+  <!-- JavaScript Functionality -->
+  <script>
+    // State management
+    let cart = [];
+    let favorites = new Set();
+
+    // Show Toast
+    function showToast(message, icon = 'fa-solid fa-circle-check', type = 'brand') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const bgColor = type === 'emerald' ? 'bg-emerald-900' : 'bg-brand-900';
+      toast.className = `${bgColor} text-white text-xs font-semibold px-4 py-3 rounded-2xl shadow-float flex items-center gap-2 pointer-events-auto transform transition-all duration-300 translate-y-3 opacity-0`;
+      toast.innerHTML = `<i class="${icon} text-amber-300 text-sm"></i><span>${message}</span>`;
+      
+      container.appendChild(toast);
+      
+      // Animate in
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-3', 'opacity-0');
+      });
+
+      // Remove after 3.5s
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Toggle Cart Drawer
+    function toggleCartDrawer(open) {
+      const overlay = document.getElementById('cart-drawer-overlay');
+      const drawer = document.getElementById('cart-drawer');
+      if (open) {
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    // Add to Cart Logic
+    function quickAddToCart(title, price, image) {
+      const existing = cart.find(item => item.title === title);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ title, price, image, qty: 1 });
+      }
+      updateCartUI();
+      showToast(`${title} ditambahkan ke keranjang!`, 'fa-solid fa-cart-shopping');
+    }
+
+    function changeQty(index, delta) {
+      if (cart[index]) {
+        cart[index].qty += delta;
+        if (cart[index].qty <= 0) {
+          cart.splice(index, 1);
+        }
+      }
+      updateCartUI();
+    }
+
+    function removeCartItem(index) {
+      if (cart[index]) {
+        const removed = cart.splice(index, 1)[0];
+        showToast(`${removed.title} dihapus dari keranjang`, 'fa-solid fa-trash-can');
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cart-badge');
+      const drawerCount = document.getElementById('cart-drawer-count');
+      const itemsList = document.getElementById('cart-items-list');
+      const emptyState = document.getElementById('cart-empty-state');
+      const cartFooter = document.getElementById('cart-footer');
+      const subtotalEl = document.getElementById('cart-subtotal');
+
+      const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
+      badge.textContent = totalItems;
+      drawerCount.textContent = `${totalItems} item`;
+
+      if (cart.length === 0) {
+        emptyState.classList.remove('hidden');
+        cartFooter.classList.add('hidden');
+        itemsList.innerHTML = '';
+        itemsList.appendChild(emptyState);
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      cartFooter.classList.remove('hidden');
+
+      let subtotal = 0;
+      let html = '';
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.qty;
+        subtotal += itemTotal;
+        html += `
+          <div class="flex items-center gap-3 bg-white p-3 rounded-2xl border border-cream-border shadow-sm">
+            <img src="${item.image}" alt="${item.title}" class="w-14 h-14 rounded-xl object-cover flex-shrink-0">
+            <div class="flex-1 min-w-0">
+              <h5 class="text-xs font-bold font-display text-stone-900 truncate">${item.title}</h5>
+              <p class="text-[11px] font-semibold text-brand-800">Rp ${item.price.toLocaleString('id-ID')}</p>
+              <div class="flex items-center gap-2 mt-1">
+                <button onclick="changeQty(${index}, -1)" class="w-5 h-5 rounded-md bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center text-xs font-bold transition">-</button>
+                <span class="text-xs font-semibold text-stone-800 min-w-[14px] text-center">${item.qty}</span>
+                <button onclick="changeQty(${index}, 1)" class="w-5 h-5 rounded-md bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center text-xs font-bold transition">+</button>
+              </div>
+            </div>
+            <div class="flex flex-col items-end justify-between self-stretch">
+              <button onclick="removeCartItem(${index})" class="text-stone-400 hover:text-red-600 text-xs transition p-1">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+              <span class="text-xs font-bold text-stone-900">Rp ${itemTotal.toLocaleString('id-ID')}</span>
+            </div>
+          </div>
+        `;
+      });
+
+      itemsList.innerHTML = html;
+      subtotalEl.textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+    }
+
+    function checkoutOrder() {
+      if (cart.length === 0) return;
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      toggleCartDrawer(false);
+      showToast(`Pesanan diproses! Total Rp ${subtotal.toLocaleString('id-ID')}`, 'fa-solid fa-bag-shopping', 'emerald');
+      cart = [];
+      updateCartUI();
+    }
+
+    // Favorite Toggle
+    function toggleFavorite(btn, title) {
+      const icon = btn.querySelector('i');
+      if (favorites.has(title)) {
+        favorites.delete(title);
+        icon.className = 'fa-regular fa-heart text-base';
+        btn.classList.remove('text-brand-900');
+        showToast(`${title} dihapus dari favorit`, 'fa-regular fa-heart');
+      } else {
+        favorites.add(title);
+        icon.className = 'fa-solid fa-heart text-base text-brand-800 animate-bounce';
+        setTimeout(() => icon.classList.remove('animate-bounce'), 1000);
+        showToast(`${title} disimpan ke favorit!`, 'fa-solid fa-heart');
+      }
+    }
+
+    // Filter Logic
+    function filterProducts(cat) {
+      const items = document.querySelectorAll('.product-item');
+      const indicator = document.getElementById('active-filter-indicator');
+      
+      indicator.textContent = `Filter: ${cat.toUpperCase()}`;
+      indicator.classList.remove('hidden');
+
+      items.forEach(item => {
+        const itemCat = item.getAttribute('data-category');
+        if (cat === 'all' || itemCat === cat) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+      showToast(`Menampilkan menu kategori: ${cat.toUpperCase()}`, 'fa-solid fa-filter');
+    }
+
+    function filterCategory(subcat) {
+      scrollToMenu();
+      showToast(`Memuat kategori: ${subcat}`, 'fa-solid fa-cake-candles');
+    }
+
+    function resetFilters() {
+      const items = document.querySelectorAll('.product-item');
+      const indicator = document.getElementById('active-filter-indicator');
+      indicator.classList.add('hidden');
+      items.forEach(item => item.style.display = 'flex');
+    }
+
+    function showAllNotification() {
+      showToast('Menampilkan seluruh koleksi Bestseller eri lutfiana!', 'fa-solid fa-crown');
+    }
+
+    // Search Logic
+    function handleSearch(query) {
+      const q = query.toLowerCase().trim();
+      const items = document.querySelectorAll('.product-item');
+      items.forEach(item => {
+        const title = item.querySelector('h3').textContent.toLowerCase();
+        const desc = item.querySelector('p').textContent.toLowerCase();
+        if (title.includes(q) || desc.includes(q)) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    function triggerSearch() {
+      const q = document.getElementById('search-input').value;
+      if (q.trim()) {
+        scrollToMenu();
+        showToast(`Hasil pencarian untuk "${q}"`, 'fa-solid fa-magnifying-glass');
+      }
+    }
+
+    // Scroll to Menu smoothly
+    function scrollToMenu() {
+      document.getElementById('menu-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Ticket Modal Toggle
+    function toggleTicketModal(open) {
+      const modal = document.getElementById('ticket-modal');
+      const inner = modal.querySelector('div');
+      if (open) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        inner.classList.remove('scale-95');
+      } else {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        inner.classList.add('scale-95');
+      }
+    }
+
+    function copyCouponCode() {
+      const code = document.getElementById('coupon-code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        const btnText = document.getElementById('copy-btn-text');
+        btnText.textContent = 'Tersalin!';
+        showToast('Kupon ERILUTFIANA750 berhasil disalin!', 'fa-solid fa-check', 'emerald');
+        setTimeout(() => {
+          btnText.textContent = 'Salin';
+        }, 2000);
+      });
+    }
+
+    // Newsletter Handler
+    function handleNewsletter(e) {
+      e.preventDefault();
+      const email = document.getElementById('newsletter-email').value;
+      showToast(`Terima kasih! Penawaran spesial akan dikirimkan ke ${email}`, 'fa-solid fa-paper-plane', 'emerald');
+      document.getElementById('newsletter-email').value = '';
+    }
+
+    // Help & Auth Dummies
+    function toggleHelpChat() {
+      showToast('Layanan Bantuan eri lutfiana siap melayani WhatsApp 0812-3456-7890', 'fa-brands fa-whatsapp');
+    }
+
+    function showAuthMessage(e) {
+      e.preventDefault();
+      showToast('Silakan login atau daftar akun eri lutfiana untuk reward eksklusif!', 'fa-solid fa-user');
+    }
+  </script>
+</body>
+</html>
